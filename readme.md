@@ -1,4 +1,5 @@
-# Deploying the example
+# Azure App Service with containerized app using System Managed Identity
+## Deploying the example
 First deploy the container registry:
 ```pwsh
 az group create --location westeurope --name rg-bicepdemo-01
