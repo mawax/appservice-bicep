@@ -10,6 +10,7 @@ module appService 'appservice.bicep' = {
   params: {
     appServiceName: appServiceName    
     location:	location
+    dockerImage: dockerImage
   }
 }
 
@@ -18,14 +19,6 @@ module roleAssignment 'roleassignment.bicep' = {
   params: {
     appServicePrincipalId: appService.outputs.principalId
     containerRegistryName: containerRegistryName
-  }
-}
-
-module siteConfig 'siteconfig.bicep' = {
-  name: '${appServiceName}-siteconfig'
-  params: {
-    appServiceName: appService.outputs.appServiceResourceName
-    dockerImage: dockerImage
   }
 }
 

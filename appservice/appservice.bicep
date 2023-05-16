@@ -1,5 +1,6 @@
 param location string
 param appServiceName string
+param dockerImage string
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: toLower('asp-${appServiceName}')
@@ -23,17 +24,13 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
   properties: {
     serverFarmId: appServicePlan.id
     siteConfig: {
-      linuxFxVersion: 'DOCKER|nginx'
+      linuxFxVersion: 'DOCKER|${dockerImage}'
+      acrUseManagedIdentityCreds: true
       appSettings: [
         {
-          // by default, persist storage is enabled on Linux custom containers, disable since we don't need it
-          name: 'WEBSITES_ENABLE_APP_SERVICE_STORAGE'
-          value: 'false'
-        }
-        {
-          // set to false if you don't use continuous integration via the webhook
+          // set to false or remove if you don't use continuous integration via the ACR webhook
           name: 'DOCKER_ENABLE_CI'
-          value: 'true' 
+          value: 'true'
         }
       ]
     }
